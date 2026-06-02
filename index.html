@@ -358,7 +358,21 @@ footer{text-align:center;padding:1.5rem;font-size:0.73rem;color:var(--text-muted
 
     <div class="panel">
       <h3>Ongeza Mwezi</h3>
-      <div class="form-group"><label>Jina la Mwezi</label><input type="text" id="new-month" placeholder="Mf. Julai"></div>
+      <div class="form-group"><label>Chagua Mwezi</label>
+        <select id="new-month">
+          <option value="">-- Chagua Mwezi --</option>
+          <option>Machi</option>
+          <option>Aprili</option>
+          <option>Mei</option>
+          <option>Juni</option>
+          <option>Julai</option>
+          <option>Agosti</option>
+          <option>Septemba</option>
+          <option>Oktoba</option>
+          <option>Novemba</option>
+          <option>Desemba</option>
+        </select>
+      </div>
       <div class="form-group"><label>Kiwango kwa Mwezi Huu (Tsh)</label><input type="number" id="new-month-kiwango" value="5000" min="0"></div>
       <button class="btn btn-gold" onclick="addMonth()">+ Ongeza</button>
       <div id="msg-addmonth" class="msg"></div>
@@ -501,6 +515,9 @@ function copyScriptCode() {
 // ============================================================
 // CONFIG & STATE
 // ============================================================
+const MONTH_ORDER = ['Machi','Aprili','Mei','Juni','Julai','Agosti','Septemba','Oktoba','Novemba','Desemba'];
+function monthIdx(m){ const i = MONTH_ORDER.indexOf(m); return i>=0 ? i : 999; }
+
 const ADMIN_PWD_DEFAULT = "0658";
 let CONFIG = {
   scriptUrl: '',
@@ -640,8 +657,9 @@ async function sheetsPost(body) {
 function normalizeData(raw) {
   const members = (raw.members || []).map(m => ({
     id: m.id, name: m.name, kiwango: Number(m.kiwango) || 20000, payments: {}
-  }));
-  const months = (raw.months || []).map(m => ({ month: m.month, kiwango: Number(m.kiwango) || 5000 }));
+  })).sort((a, b) => a.name.localeCompare(b.name, 'sw'));
+  const months = (raw.months || []).map(m => ({ month: m.month, kiwango: Number(m.kiwango) || 5000 }))
+    .sort((a, b) => monthIdx(a.month) - monthIdx(b.month));
   const payments = raw.payments || [];
   payments.forEach(p => {
     const m = members.find(x => x.id == p.memberId);
@@ -704,8 +722,8 @@ function getMemberTotals(member) {
 }
 
 function renderRipoti() {
-  const months = DATA.months;
-  const members = DATA.members;
+  const months = [...DATA.months].sort((a,b) => monthIdx(a.month) - monthIdx(b.month));
+  const members = [...DATA.members].sort((a,b) => a.name.localeCompare(b.name, 'sw'));
 
   document.getElementById('ripoti-period').textContent = months.length > 0
     ? `Kipindi: ${months[0].month} – ${months[months.length-1].month} ${new Date().getFullYear()}`
@@ -782,15 +800,18 @@ function renderRipoti() {
 // ADMIN ACTIONS
 // ============================================================
 function refreshAdminSelects() {
+  const sortedM = [...DATA.members].sort((a,b) => a.name.localeCompare(b.name,'sw'));
   document.getElementById('pay-member').innerHTML =
-    DATA.members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+    sortedM.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+  const sortedMz = [...DATA.months].sort((a,b) => monthIdx(a.month) - monthIdx(b.month));
   document.getElementById('pay-month').innerHTML =
-    DATA.months.map(m=>`<option value="${m.month}">${m.month}</option>`).join('');
+    sortedMz.map(m=>`<option value="${m.month}">${m.month}</option>`).join('');
 }
 
 function renderMembersList() {
+  const sorted = [...DATA.members].sort((a,b) => a.name.localeCompare(b.name, 'sw'));
   document.getElementById('members-list').innerHTML =
-    DATA.members.map((m,i)=>`<tr>
+    sorted.map((m,i)=>`<tr>
       <td style="color:var(--text-muted)">${i+1}</td>
       <td style="text-align:left;padding-left:0.9rem">${m.name}</td>
       <td>Tsh ${fmtN(m.kiwango)}</td>
