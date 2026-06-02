@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kwaya ya Uwaka - Michango</title>
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #F5E6C0;
+  --gold-dark: #8A6A1E;
+  --navy: #1A2340;
+  --navy-light: #2E3B5E;
+  --cream: #FAF7F0;
+  --white: #FFFFFF;
+  --success: #2D7A3A;
+  --success-bg: #E8F5EA;
+  --danger: #A32D2D;
+  --danger-bg: #FCEBEB;
+  --warning-bg: #FFF3CD;
+  --warning: #7A5200;
+  --border: rgba(201,168,76,0.25);
+  --text-main: #1A2340;
+  --text-muted: #5A6070;
+  --shadow: 0 4px 20px rgba(26,35,64,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Georgia',serif;background:var(--cream);color:var(--text-main);min-height:100vh;}
+
+/* HEADER */
+.site-header{
+  background:var(--navy);
+  color:var(--white);
+  text-align:center;
+  padding:1.2rem 1rem 1rem;
+  border-bottom:4px solid var(--gold);
+  position:relative;
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1.2rem;
+  max-width:820px;
+  margin:0 auto;
+  flex-wrap:wrap;
+}
+.header-saint{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.3rem;
+}
+.saint-img{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  border:3px solid var(--gold);
+  object-fit:cover;
+  background:#2E3B5E;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.saint-img img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.saint-label{font-size:0.62rem;color:var(--gold-light);letter-spacing:0.06em;text-transform:uppercase;text-align:center;max-width:80px;line-height:1.3;}
+.header-center{flex:1;min-width:200px;}
+.header-center .upper{font-size:clamp(0.7rem,1.8vw,0.88rem);color:var(--gold-light);letter-spacing:0.07em;text-transform:uppercase;line-height:1.7;}
+.kwaya-name{font-size:clamp(1.3rem,4vw,1.9rem);font-weight:bold;color:var(--gold);letter-spacing:0.04em;margin:0.2rem 0 0.1rem;}
+.header-center .sub{font-size:0.78rem;color:rgba(255,255,255,0.5);margin-top:0.15rem;}
+.cross-divider{color:var(--gold);font-size:1rem;margin:0 0.4rem;}
+
+/* NAV */
+.nav-tabs{display:flex;justify-content:center;gap:0;background:var(--navy-light);border-bottom:2px solid var(--gold);}
+.nav-tab{padding:0.65rem 2rem;cursor:pointer;font-family:Georgia,serif;font-size:0.88rem;color:rgba(255,255,255,0.6);border:none;background:transparent;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.18s;letter-spacing:0.04em;}
+.nav-tab:hover{color:var(--gold-light);}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:bold;}
+
+/* CONFIG BANNER */
+.config-banner{background:#1e3a5f;border-left:4px solid var(--gold);padding:0.75rem 1.2rem;font-size:0.82rem;color:#b8cfea;display:flex;align-items:flex-start;gap:0.7rem;flex-wrap:wrap;}
+.config-banner strong{color:var(--gold);}
+.config-banner code{background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:#fff;}
+.config-banner a{color:var(--gold-light);text-decoration:underline;}
+
+/* VIEWS */
+.view{display:none;padding:1.5rem 1rem 3rem;max-width:920px;margin:0 auto;}
+.view.active{display:block;}
+
+/* SECTION TITLE */
+.section-title{text-align:center;margin-bottom:1.5rem;}
+.section-title h2{font-size:1.25rem;color:var(--navy);border-bottom:2px solid var(--gold);display:inline-block;padding-bottom:0.3rem;padding:0 0.5rem 0.3rem;}
+.section-title p{font-size:0.82rem;color:var(--text-muted);margin-top:0.4rem;}
+
+/* SUMMARY */
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.75rem;margin-bottom:1.5rem;}
+.summary-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;text-align:center;box-shadow:var(--shadow);}
+.summary-card .label{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.3rem;}
+.summary-card .value{font-size:1.2rem;font-weight:bold;color:var(--navy);}
+.summary-card.gold-card{background:var(--navy);border-color:var(--gold);}
+.summary-card.gold-card .label{color:var(--gold-light);}
+.summary-card.gold-card .value{color:var(--gold);}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:10px;box-shadow:var(--shadow);}
+table{width:100%;border-collapse:collapse;background:var(--white);font-size:0.8rem;}
+thead tr{background:var(--navy);color:var(--white);}
+thead th{padding:0.6rem 0.55rem;text-align:center;font-weight:600;font-size:0.73rem;letter-spacing:0.04em;border-right:1px solid rgba(255,255,255,0.09);white-space:nowrap;}
+thead th:nth-child(2){text-align:left;padding-left:0.9rem;}
+tbody tr{border-bottom:1px solid rgba(201,168,76,0.1);transition:background 0.13s;}
+tbody tr:hover{background:var(--gold-light);}
+tbody td{padding:0.52rem 0.55rem;text-align:center;}
+tbody td:nth-child(2){text-align:left;font-weight:600;padding-left:0.9rem;}
+.tfoot-row td{background:var(--navy);color:var(--gold);font-weight:bold;padding:0.6rem 0.55rem;text-align:center;}
+.tfoot-row td:nth-child(2){text-align:left;padding-left:0.9rem;}
+
+/* BADGES */
+.badge{display:inline-block;border-radius:20px;padding:2px 9px;font-size:0.7rem;font-weight:bold;}
+.badge-ok{background:var(--success-bg);color:var(--success);}
+.badge-due{background:var(--danger-bg);color:var(--danger);}
+.badge-credit{background:#E3F0FF;color:#1A5CA8;}
+.badge-partial{background:var(--warning-bg);color:var(--warning);}
+.paid{color:var(--success);font-weight:600;}
+.unpaid{color:#C5C8D0;}
+
+/* FILTER */
+.filter-bar{display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:1rem;}
+.filter-bar label{font-size:0.78rem;color:var(--text-muted);}
+.filter-bar select,.filter-bar input[type=text]{padding:0.38rem 0.65rem;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;background:var(--white);color:var(--text-main);outline:none;}
+.filter-bar select:focus,.filter-bar input[type=text]:focus{border-color:var(--gold);}
+
+/* LOADING */
+.loading-state{text-align:center;padding:2.5rem 1rem;color:var(--text-muted);}
+.spinner{display:inline-block;width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:0.7rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* LOGIN */
+.login-box{max-width:340px;margin:3rem auto;background:var(--white);border:2px solid var(--gold);border-radius:14px;padding:2rem 1.8rem;box-shadow:var(--shadow);text-align:center;}
+.login-box .cross{font-size:2.5rem;color:var(--gold);margin-bottom:0.5rem;}
+.login-box h3{font-size:1.1rem;color:var(--navy);margin-bottom:1.2rem;}
+.login-box input{width:100%;padding:0.6rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:1rem;margin-bottom:1rem;outline:none;font-family:Georgia,serif;}
+.login-box input:focus{border-color:var(--gold);}
+.login-box .error{color:var(--danger);font-size:0.8rem;margin-bottom:0.7rem;min-height:1.2em;}
+
+/* BUTTONS */
+.btn{display:inline-block;padding:0.5rem 1.2rem;border:none;border-radius:7px;cursor:pointer;font-size:0.86rem;font-family:Georgia,serif;transition:filter 0.13s,transform 0.1s;}
+.btn:active{transform:scale(0.98);}
+.btn-gold{background:var(--gold);color:var(--navy);font-weight:bold;}
+.btn-gold:hover{filter:brightness(1.09);}
+.btn-navy{background:var(--navy);color:var(--white);}
+.btn-navy:hover{filter:brightness(1.15);}
+.btn-danger{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger);}
+.btn-danger:hover{background:var(--danger);color:var(--white);}
+.btn-sm{padding:0.28rem 0.65rem;font-size:0.76rem;}
+
+/* ADMIN */
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:600px){.admin-grid{grid-template-columns:1fr;}}
+.panel{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.2rem;box-shadow:0 2px 10px rgba(26,35,64,0.06);}
+.panel h3{font-size:0.93rem;color:var(--navy);border-left:3px solid var(--gold);padding-left:0.6rem;margin-bottom:1rem;}
+.form-group{margin-bottom:0.7rem;}
+.form-group label{display:block;font-size:0.76rem;color:var(--text-muted);margin-bottom:0.22rem;}
+.form-group input,.form-group select{width:100%;padding:0.42rem 0.65rem;border:1px solid var(--border);border-radius:6px;font-size:0.83rem;font-family:Georgia,serif;outline:none;background:var(--cream);}
+.form-group input:focus,.form-group select:focus{border-color:var(--gold);background:var(--white);}
+.msg{font-size:0.78rem;margin-top:0.45rem;padding:0.38rem 0.65rem;border-radius:5px;}
+.msg-ok{background:var(--success-bg);color:var(--success);}
+.msg-err{background:var(--danger-bg);color:var(--danger);}
+.admin-actions{display:flex;gap:0.4rem;justify-content:center;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.topbar h2{font-size:1.05rem;color:var(--navy);}
+
+/* SYNC STATUS */
+.sync-bar{display:flex;align-items:center;gap:0.6rem;font-size:0.76rem;padding:0.4rem 0.8rem;border-radius:6px;margin-bottom:1rem;}
+.sync-bar.ok{background:var(--success-bg);color:var(--success);}
+.sync-bar.err{background:var(--danger-bg);color:var(--danger);}
+.sync-bar.pending{background:var(--warning-bg);color:var(--warning);}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
+/* SETUP GUIDE */
+.setup-guide{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1.5rem;font-size:0.82rem;line-height:1.7;}
+.setup-guide h4{color:var(--navy);margin-bottom:0.6rem;font-size:0.95rem;border-bottom:1px solid var(--border);padding-bottom:0.4rem;}
+.setup-guide ol{padding-left:1.3rem;color:var(--text-main);}
+.setup-guide li{margin-bottom:0.4rem;}
+.setup-guide code{background:var(--cream);border:1px solid var(--border);padding:1px 6px;border-radius:4px;font-size:0.78rem;}
+.setup-guide a{color:var(--gold-dark);font-weight:bold;}
+
+/* CONFIG PANEL */
+.config-panel{background:var(--white);border:2px solid var(--gold);border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:1.5rem;}
+.config-panel h3{font-size:0.93rem;color:var(--navy);margin-bottom:0.8rem;}
+.config-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem;}
+@media(max-width:550px){.config-row{grid-template-columns:1fr;}}
+
+footer{text-align:center;padding:1.5rem;font-size:0.73rem;color:var(--text-muted);border-top:1px solid var(--border);}
+@media(max-width:600px){
+  .nav-tab{padding:0.55rem 0.8rem;font-size:0.76rem;}
+  table{font-size:0.7rem;}
+  thead th,tbody td,.tfoot-row td{padding:0.42rem 0.3rem;}
+  .saint-img{width:56px;height:56px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER with Saints -->
+<header class="site-header">
+  <div class="header-inner">
+
+    <!-- Mt. Theresia -->
+    <div class="header-saint">
+      <div class="saint-img" id="img-theresia-wrap">
+        <img id="img-theresia" src="" alt="Mt. Theresia" onerror="this.parentNode.innerHTML='✝'">
+      </div>
+      <div class="saint-label">Mt. Theresia wa Mtoto Yesu</div>
+    </div>
+
+    <!-- Center text -->
+    <div class="header-center">
+      <div class="upper">
+        Kanisa Katoliki Jimbo Kuu la Dar es Salaam<br>
+        Parokia ya Mt. Theresia wa Mtoto Yesu <span class="cross-divider">✦</span> Mbezi Mwisho
+      </div>
+      <div class="kwaya-name">Kwaya ya Uwaka</div>
+      <div class="sub">Mt. Joseph &nbsp;·&nbsp; Mfumo wa Michango ya Jamii</div>
+    </div>
+
+    <!-- Mt. Joseph -->
+    <div class="header-saint">
+      <div class="saint-img" id="img-joseph-wrap">
+        <img id="img-joseph" src="" alt="Mt. Joseph" onerror="this.parentNode.innerHTML='✝'">
+      </div>
+      <div class="saint-label">Mt. Yosefu (Joseph)</div>
+    </div>
+
+  </div>
+</header>
+
+<nav class="nav-tabs">
+  <button class="nav-tab active" onclick="showView('ripoti')">📊 Ripoti ya Michango</button>
+  <button class="nav-tab" onclick="showView('admin-gate')">🔐 Muhazini</button>
+</nav>
+
+<!-- CONFIG BANNER -->
+<div class="config-banner" id="config-banner" style="display:none">
+  ⚙️ <span><strong>Mfumo haujaungwa na Google Sheets.</strong> Nenda kwenye dashibodi ya Muhazini → "Mipangilio" ili kuweka Script URL na Spreadsheet ID yako. <a href="#" onclick="showView('admin-gate');return false;">Bonyeza hapa kuingia</a>.</span>
+</div>
+
+<!-- =================== RIPOTI =================== -->
+<div id="view-ripoti" class="view active">
+  <div class="section-title">
+    <h2>Ripoti ya Michango ya Jamii</h2>
+    <p id="ripoti-period"></p>
+  </div>
+  <div id="ripoti-sync-bar"></div>
+  <div class="summary-grid" id="summary-cards"></div>
+  <div class="filter-bar">
+    <label>Tafuta:</label>
+    <input type="text" id="search-name" placeholder="Tafuta jina..." oninput="renderRipoti()">
+    <label>Hali:</label>
+    <select id="filter-status" onchange="renderRipoti()">
+      <option value="">Wote</option>
+      <option value="ok">Waliolipa kikamilifu</option>
+      <option value="deni">Wenye deni</option>
+      <option value="credit">Wamelipa zaidi</option>
+    </select>
+    <button class="btn btn-navy btn-sm" onclick="loadFromSheets(true)">🔄 Sasisha</button>
+  </div>
+  <div id="ripoti-loading" class="loading-state" style="display:none">
+    <div class="spinner"></div><br>Inapakia data kutoka Google Sheets...
+  </div>
+  <div class="table-wrap" id="ripoti-table-wrap">
+    <table>
+      <thead><tr id="table-header"></tr></thead>
+      <tbody id="table-body"></tbody>
+      <tfoot><tr class="tfoot-row" id="table-footer"></tr></tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- =================== ADMIN LOGIN =================== -->
+<div id="view-admin-gate" class="view">
+  <div class="login-box">
+    <div class="cross">✝</div>
+    <h3>Ingia kwa Muhazini</h3>
+    <input type="password" id="pwd-input" placeholder="Weka nywila..." onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="error" id="login-error"></div>
+    <button class="btn btn-gold" style="width:100%" onclick="doLogin()">Ingia</button>
+  </div>
+</div>
+
+<!-- =================== ADMIN DASHBOARD =================== -->
+<div id="view-admin" class="view">
+  <div class="topbar">
+    <h2>🛡️ Dashibodi ya Muhazini</h2>
+    <button class="btn btn-danger btn-sm" onclick="doLogout()">Toka</button>
+  </div>
+
+  <!-- SHEETS CONFIG -->
+  <div class="config-panel">
+    <h3>⚙️ Mipangilio ya Google Sheets</h3>
+    <div class="config-row">
+      <div class="form-group">
+        <label>Google Apps Script Web App URL</label>
+        <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/AKfycbwvVl5vB3vDlR4B4sU3kOvUjAx-gNcsXvkmwgJxFcBaE1pbFyjp1oBaPdDPomuIHWJ7Kw/exec">
+      </div>
+      <div class="form-group">
+        <label>Spreadsheet ID</label>
+        <input type="text" id="cfg-sheet-id" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
+      </div>
+    </div>
+    <div class="form-group" style="max-width:340px">
+      <label>Nywila ya Muhazini (badilisha)</label>
+      <input type="password" id="cfg-password" placeholder="Acha tupu kutobadilisha">
+    </div>
+    <div style="display:flex;gap:0.7rem;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-gold" onclick="saveConfig()">💾 Hifadhi Mipangilio</button>
+      <button class="btn btn-navy" onclick="testConnection()">🔌 Jaribu Muunganiko</button>
+      <span id="msg-config"></span>
+    </div>
+    <div id="sync-status-bar"></div>
+  </div>
+
+  <!-- SETUP GUIDE -->
+  <details style="margin-bottom:1.2rem">
+    <summary style="cursor:pointer;font-size:0.85rem;color:var(--navy);font-weight:bold;padding:0.4rem 0">📖 Mwongozo wa Kusanidi Google Sheets (bonyeza kuona)</summary>
+    <div class="setup-guide" style="margin-top:0.5rem">
+      <h4>Hatua za Kuunganisha Google Sheets</h4>
+      <ol>
+        <li>Fungua <a href="https://sheets.google.com" target="_blank">Google Sheets</a> → Tengeneza spreadsheet mpya → Nakili <strong>Spreadsheet ID</strong> kutoka URL (sehemu kati ya <code>/d/</code> na <code>/edit</code>).</li>
+        <li>Katika spreadsheet hiyo, nenda <strong>Extensions → Apps Script</strong>.</li>
+        <li>Futa code yote iliyopo, kisha <strong>nakili na ubandike code hii yote</strong> kutoka sehemu ya "Apps Script Code" hapa chini.</li>
+        <li>Bonyeza <strong>Deploy → New deployment → Web app</strong>.</li>
+        <li>Weka: <em>Execute as: Me</em> · <em>Who has access: Anyone</em>.</li>
+        <li>Bonyeza <strong>Deploy</strong> → Nakili URL inayotolewa → Ibandike kwenye sehemu ya "Script URL" hapo juu.</li>
+        <li>Bonyeza <strong>Hifadhi Mipangilio</strong> kisha <strong>Jaribu Muunganiko</strong>.</li>
+      </ol>
+      <p style="margin-top:0.7rem;color:var(--text-muted)">Kumbuka: Mara ya kwanza utaulizwa ruhusa — kubali yote (ni ya salama kwa sababu ni script yako mwenyewe).</p>
+    </div>
+  </details>
+
+  <!-- APPS SCRIPT CODE -->
+  <details style="margin-bottom:1.5rem">
+    <summary style="cursor:pointer;font-size:0.85rem;color:var(--navy);font-weight:bold;padding:0.4rem 0">📋 Code ya Google Apps Script (nakili hii)</summary>
+    <div style="margin-top:0.5rem;background:#1e2d3d;border-radius:8px;padding:1rem;overflow-x:auto">
+      <pre id="apps-script-code" style="color:#a8d8a8;font-size:0.72rem;line-height:1.6;white-space:pre-wrap;font-family:monospace"></pre>
+      <button class="btn btn-gold btn-sm" style="margin-top:0.7rem" onclick="copyScriptCode()">📋 Nakili Code</button>
+      <span id="copy-msg" style="font-size:0.78rem;color:var(--gold-light);margin-left:0.5rem"></span>
+    </div>
+  </details>
+
+  <!-- ACTIONS -->
+  <div class="admin-grid">
+    <div class="panel">
+      <h3>Ongeza Mwanakwaya</h3>
+      <div class="form-group"><label>Jina Kamili</label><input type="text" id="new-name" placeholder="Mf. Yohane Mkwawa"></div>
+      <div class="form-group"><label>Kiwango cha Jumla (Tsh)</label><input type="number" id="new-kiwango" value="20000" min="0"></div>
+      <button class="btn btn-gold" onclick="addMember()">+ Ongeza</button>
+      <div id="msg-addmember" class="msg"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Ongeza Mwezi</h3>
+      <div class="form-group"><label>Jina la Mwezi</label><input type="text" id="new-month" placeholder="Mf. Julai"></div>
+      <div class="form-group"><label>Kiwango kwa Mwezi Huu (Tsh)</label><input type="number" id="new-month-kiwango" value="5000" min="0"></div>
+      <button class="btn btn-gold" onclick="addMonth()">+ Ongeza</button>
+      <div id="msg-addmonth" class="msg"></div>
+    </div>
+
+    <div class="panel" style="grid-column:1/-1">
+      <h3>Rekodi Malipo</h3>
+      <div class="admin-grid" style="margin-bottom:0">
+        <div class="form-group"><label>Mwanakwaya</label><select id="pay-member"></select></div>
+        <div class="form-group"><label>Mwezi</label><select id="pay-month"></select></div>
+        <div class="form-group"><label>Kiasi (Tsh)</label><input type="number" id="pay-amount" placeholder="5000" min="0"></div>
+        <div style="display:flex;align-items:flex-end">
+          <button class="btn btn-navy" style="width:100%" onclick="recordPayment()">💾 Hifadhi Malipo</button>
+        </div>
+      </div>
+      <div id="msg-payment" class="msg"></div>
+    </div>
+  </div>
+
+  <!-- MEMBERS LIST -->
+  <div class="panel">
+    <h3>Orodha ya Wanakwaya</h3>
+    <div class="table-wrap" style="box-shadow:none">
+      <table>
+        <thead><tr><th>#</th><th style="text-align:left;padding-left:0.9rem">Jina</th><th>Kiwango</th><th>Futa</th></tr></thead>
+        <tbody id="members-list"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer>✝ Kwaya ya Uwaka — Mt. Joseph &nbsp;|&nbsp; Parokia ya Mt. Theresia wa Mtoto Yesu Mbezi Mwisho</footer>
+
+<script>
+// ============================================================
+// APPS SCRIPT CODE (shown to admin for copy-paste)
+// ============================================================
+const APPS_SCRIPT_CODE = `
+const SHEET_NAME_MEMBERS = "Wanakwaya";
+const SHEET_NAME_MONTHS  = "Miezi";
+const SHEET_NAME_PAYMENTS = "Malipo";
+
+function doGet(e) {
+  return handleRequest(e);
+}
+function doPost(e) {
+  return handleRequest(e);
+}
+
+function handleRequest(e) {
+  const params = e.parameter || {};
+  const action = params.action || (e.postData ? JSON.parse(e.postData.contents).action : "");
+  const body   = e.postData ? JSON.parse(e.postData.contents) : params;
+
+  let result;
+  try {
+    if (action === "getData")        result = getData();
+    else if (action === "addMember") result = addMember(body);
+    else if (action === "addMonth")  result = addMonth(body);
+    else if (action === "addPayment")result = addPayment(body);
+    else if (action === "deleteMember") result = deleteMember(body);
+    else result = {error: "Kitendo kisichojulikana: " + action};
+  } catch(err) {
+    result = {error: err.toString()};
+  }
+
+  return ContentService
+    .createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getOrCreateSheet(name, headers) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+    sheet.appendRow(headers);
+  }
+  return sheet;
+}
+
+function getData() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const msSheet = ss.getSheetByName(SHEET_NAME_MEMBERS);
+  const mzSheet = ss.getSheetByName(SHEET_NAME_MONTHS);
+  const pySheet = ss.getSheetByName(SHEET_NAME_PAYMENTS);
+
+  const members = msSheet ? msSheet.getDataRange().getValues().slice(1)
+    .filter(r => r[0]).map(r => ({id: r[0], name: r[1], kiwango: r[2]})) : [];
+  const months  = mzSheet ? mzSheet.getDataRange().getValues().slice(1)
+    .filter(r => r[0]).map(r => ({month: r[0], kiwango: r[1]})) : [];
+  const payments= pySheet ? pySheet.getDataRange().getValues().slice(1)
+    .filter(r => r[0]).map(r => ({memberId: r[0], month: r[1], amount: r[2]})) : [];
+
+  return {members, months, payments};
+}
+
+function addMember(body) {
+  const sheet = getOrCreateSheet(SHEET_NAME_MEMBERS, ["ID","Jina","Kiwango"]);
+  const existing = sheet.getDataRange().getValues().slice(1).map(r => r[0]);
+  const newId = existing.length > 0 ? Math.max(...existing) + 1 : 1;
+  sheet.appendRow([newId, body.name, body.kiwango]);
+  return {success: true, id: newId};
+}
+
+function addMonth(body) {
+  const sheet = getOrCreateSheet(SHEET_NAME_MONTHS, ["Mwezi","Kiwango"]);
+  const existing = sheet.getDataRange().getValues().slice(1).map(r => r[0]);
+  if (existing.includes(body.month)) return {error: "Mwezi upo tayari"};
+  sheet.appendRow([body.month, body.kiwango]);
+  return {success: true};
+}
+
+function addPayment(body) {
+  const sheet = getOrCreateSheet(SHEET_NAME_PAYMENTS, ["MemberID","Mwezi","Kiasi","Tarehe"]);
+  sheet.appendRow([body.memberId, body.month, body.amount, new Date().toISOString()]);
+  return {success: true};
+}
+
+function deleteMember(body) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME_MEMBERS);
+  if (!sheet) return {error: "Sheet haipatikani"};
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (data[i][0] == body.id) { sheet.deleteRow(i + 1); break; }
+  }
+  return {success: true};
+}
+`.trim();
+
+document.getElementById('apps-script-code').textContent = APPS_SCRIPT_CODE;
+
+function copyScriptCode() {
+  navigator.clipboard.writeText(APPS_SCRIPT_CODE).then(() => {
+    document.getElementById('copy-msg').textContent = '✓ Imenakiliwa!';
+    setTimeout(() => document.getElementById('copy-msg').textContent = '', 2500);
+  });
+}
+
+// ============================================================
+// CONFIG & STATE
+// ============================================================
+const ADMIN_PWD_DEFAULT = "0658";
+let CONFIG = {
+  scriptUrl: '',
+  sheetId: '',
+  password: ADMIN_PWD_DEFAULT,
+  theresiaSrc: 'data:image/jpeg;base64,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',
+  josephSrc: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAB2AIADASIAAhEBAxEB/8QAHQAAAgMBAQEBAQAAAAAAAAAABgcABQgEAwIBCf/EADwQAAEDAwIEBAQEBAQHAQAAAAECAwQABREGIQcSMUETIlFhFDJxgQgjkaEVQmKxFlKi4SQzcoKSwdHw/8QAGwEAAgMBAQEAAAAAAAAAAAAABAUCAwYAAQf/xAAwEQABAwIEBAQGAgMAAAAAAAABAAIDBBEFEiExE0FRYQYisfAUI3GBwdGRoRUz4f/aAAwDAQACEQMRAD8AxlUqVK5cpUrrtdvlXKWmNEb5lnqT0SPUn0p88DuHMSfcHY0S1NXec3guzH0/kRh9DgZ/U/SrWRZgXE2A5lVPla025pMRNKXt6I3NdhuRojm6XnklIUPUetXtm0UmSsJbYl3BZwOVptWCf+3etv2jh5p2Iy2Lkw3dFtpx+cjDKfXlRnGPqTX1qLiBorSLCIxnRUFR5UxIKU9R/SnYUA7GKVhyxMLz1Oy94E8mt7IC/Dbw5scbTExzUWi4gk+OfBXNto8YJwOilp5sUdak4bxn+aTa1R2FFORH8MIIx9KoDxpsjq/Cg2mZLcJxyNqAIPpkirS0cU7PJR/x9qu9s8wQouxyQkk4Gcds9xmqRjZa/MG2V3wLy3XVJzUcIRpTrEllKlJUUkKTmijhPwt0xf3nZmo9NWuTBdQUJBbCVknoQUYUPrmmvddPaS1igOusokLb6uML8NxO22cfrvQrC01cuHd+aulvnuTrE6sNym1Dztg9yBsR7gCm0eLU9W3Js73zQRp3xPuRogvid+GTQAjrkaenXGyv4JS3z/EM+2yzzf6qzXrThfqvTCnHHYfx0RGT8RGBUAB3Keo/t71/Qi6mLOYS42pJYV3HQ5qsvelbeiCp3C1KI2GKk1jLWdurXOcNRsv5p1K1BxS4S2W9OOybc2i3XDJIcbSAhZ/qSP7jes5aksVz09c12+6RlMupOx6pWPVJ7ioSQuZryU2SByrKlSpVSmpXfYrXJvFxbhxk7qI5lkbIHqa4kIU4tKEJKlKOEgDcmmtbLH/hy3ojpmMGYoBx9TZyebHy59BRFNBxX2Oyonl4bbjddVp0i5b1sQYpCFSHUtIcc2K1qIAP71svQumoekdORbNDZ5FpSDKX1LjuPMSe++QPQVjvTd3VG1Pa5s5ZcaYltKWVb8qecZP2Fbc+LalES2FFxl4BxCsfMlW4P6Gl/ieRzI2RjRqrw9ge4uOpSJ/Enr6XDfVpG2v/AAq1JSt91OSVJI+XbpSNs1nk3p1RGYz6TnxFKACz9/8A7V9xyl/FcT7k+HFhaFltK/DKAMHG4Pp6967OGCBJkYT4a1t7hbpJBPbH+1IP9EAc1PYoxJJlKMOG/DlrnUblcpLMhKgppbASCk+vMQabETSbRUf4hf7nOCgAWyUpSQPoOvuKC2LLrr49tyLNDsRaDhcV1psIX2zzIUSKvbZ/iRLr9guepmlSpLRDEllKQtpeMlOQE9qTTuklN84T6OGNrcuSyqtdPSOHWorfeLHIW3EmLDMmO7lwqPbcnOMD9adVse+Mt0aV4fhpfbSvlVt1GcUg9YaJfh2iEX76iRcPi0Eq5T5hnzKWVEqJxnpge3er7WHF0RH16d0qz8bKaQGkSUIKwVDYlKO4B9dqKjcMgym9t0urKYueABujpWkbknVKZ8a6oRbkq50RiVeU9xjBGPTejKQyt2L4ayknHXpms/2i98Rru5E8eJdm5cUjxQ4S0xKSrr0GBjHf1q+uesNS6alF25mfHjH5EutJW0T6eJ2/aiHeIp2vDLXt/KpGCnJmzK61ZYHUvKWGlJKj6Ut9caKtWprM7bbpHKVjJZkAedpfYg/3HenvpbUcDUcbw1+AqTyDnaSrnG49aptX2NiI4HEoJacGRjflPpWnwvHIq0CMjU+/sk9VRPpnXK/nhrPTVx0rfXrTckedBy24keV1HZQ//bVS1sDjTomJq3TbjLTSUXKKC5DdOxz3QT6H++KyC62tp1bTqFIcQopUlQwQR1Bo2aLhnsoNdcK80XFLlxMtScpYGUk/5j0oySouOpQV4K1YyroCe5ql0uylmztjdK3SVkj36ftimJY71o+OxF+P0w8ibHUlSJkWSVEqSchSm1+VXuNtqYRfIiBAuSls3zJd1yay0bfNKLiG6tsux5rQcjyY6udl0EZwFeo9MdqZnBLi+zaIqNO6recENGBEmkFZa/oXjfl9DvjAGMV233i/YL7pWKkx4sa8Wd9MqE29HSlp45CVDlGUpUU574rou+o9CXbhbqeRFt9uMi6FuQxDS0EutyBgLPqCSVHbt02pVVVMNVFwJ26lXRRPjdnjKveNXDmPr23NXixvRFTA3zJeTyhD6TuPOP2zkUhLZB1Loe8Ik3m3PsRwfDKlEYUB/l9frVOm53lhuRaUXGbHihPMuKlxSEZzuSnODTrsekm7jpSLIjttlCmwtsJTsoVm6uAULcjnZmnZaGgzVL7jQhdtn1UyuzF6zSkLK0nwwtIwlQGcE5oOj2ufcrqbxdmUqU86Al1b5QWznr6AVcO8M3nj8ZY5qocoE+I2R0P0NdA0NrCbELEu8Qn0KHhuI8MlavQnpjHt6UiaY4r5HjXrutG7ivtnZe3TZc2pHJ9htM92Rc2ZX5Z8BafKAk9Rjv8AaqDg2+5cLs0xBmtRpQaKgpxoAA7dxuSfeq/ilpe62eVbIr0mRPC1hpCOXmKjjYADc1faJ4ZanjsN3aPbzGlhZLJcXyOAjrlOCfscU2hpI3Upkzi52+yWSVT21QYWmw/KdcRNxjW5VtuOoIxmupAYUltWQo9SBnJHSqXWVovKNCXOPc74zMyypQCkZwQNgCokivKxs3191pd4sry5CNvEYmONIV9U5okv2lXdSwG4U9DiIiiPFjoUR4g/y83WkRkYx9ibp25gy5rpdfhlm3C6ajW3ycrURJLqG44DaMjAwobjPvT81D4LzQjukA5yCTXxZtNM6Z018DpS126E4BnwlqUAVYxknBJNCFycuc6IwiaXHEB8h/4ZCucqGcD1xkDfH7U4ppYqeTju05gd7f0s3JHJWOyDlbXsqnUiGoz5Q42cHvjFZH/EPpxu06tTdojZTFuQKlbbB0fN+owf1rZ2p4HjttunxE4QPKeucb536+uKRH4hLEJ2gpjoSC9CUmSjbcAbK/0k/pW4hlFVTCQdLpC+Mwylh5JMxUhqM02nYJQBn7UQaOs6NQX+Pa3bnGtof8jbz4JQVn5UnG+5wKogByjHTG1d1nnrtV7t9wbQHVxX0PhClEAlKgQDj6UdUyGOLy78kujaHP8ANsm67+H64sNv2yddozl+koJtyWlqDBIHMQoqSkklIPTYU6OD2l7RpDT1v0xfrWtdzbHiiVIhJUgOK3wl5GRtnHXNBo432T4qDMGnlzZwjEnldCCyo5ygFQJIIPX36V18K2JWs7NdrpdZiZIkSFpYgMSCt6GnfAWRygD02yRWRmE5jvMLJw1sebyI0k6DTq2bMY1bYYRi+IVRZbDoS6sb4zg831Cv0pAyb9qbhfqufpe2z4V1t0dfPDQ/50ls5wMggpO24zWg9BPy2Iz0G52RLDcBAYZCVla3W+3lO+cDvnNZw4uv297W08MWWVZ3IzwKY7pBWUqJwAkZx06V7RNimGSXzN7r2WV8Ls0eh7JqcN+JVs1G4pN6gN2SShJUlxT4U04B1xnBT98/Wve/cWNFWlKjbETby+4SnkiMdSPdWNvcZrO92ek2iZ8RDKkocHI42rqARV/wbk2yBNl3O7BCkNZSjxMENpPVQBye5FUVuC0VO0ygE9B39UfS4rVTkREgdSmHYrzqfUV+/j8qyItcxny2mNLYKkNp7uKyU5PUZ260TaDlaslXiU/ciFMtPOCUwpIw4pSsgtq8TyjbpgfSl5rDiFp2MwsaQajNSyRiV4PKWx1KgC2M+nXvVBonWEyxypklu9R1puL3jSkBsZKt+mRt1PSupqP4iNrgwtHT9a+qorKs08rgXhx6/uw9FsKxuszGIofjo+IcOCCQSkD1IoiRGZaAKG0JBOMgVmrhXxK+Fv8AINxnOTmHVYjNtMD8onsSOv1rQ8K8RprCVxlB9aQD4aFBRSfffal9TTNjlIA9PwpslfIwOJ/S+dXzRadPSpyTgNAEk0ubtcre4I1+jzERw8kN7L2eVjmP9sUb62jS71pafbkRwnxmiMrXvnHoKz1pXU2nI1qVpXVSlMOxZQGUpJVhKsgD7jt9KodTCVhtujKWoMDgSnTJizJGjGZojpXJ8ziWObdaDkgJPrjfek3qa42XUVluMFIcQ49EdaU06jlUOZBH3pzHVemJdi+MVcGGokQBZ5145UgYG307VmKbe7WvVl3lRWXBClPOLjkkjlSTkDl32rT+H3P4To3A2CT4kW8XP1KW8LT90TpKFqKTGU1AkhKWnV7eIcDOB3xX7breqfJR4SeiutU+m9QTbpp+FaJ8xaotrBbYQo5CEKUVbD6k/oKNrJfIUeJ4MK1vyiPmWNh+tOmvMpBcgCwMvZdd2gW+PHQ8iQluU3jbOM1V3dcmGwm7QnnWW5CeV9DaikZHQ7fSuS5ankNz0rXAZUjsyo8xrxul2XMZUMlDTowWHDjl+g9K8e5jgQvG5grKVrbUM3TaLdPnfEoWtCUOKyHEhAISQpJByAetc8RmU7Mbdjp+LlY2SUKU4r64yVD2OaGGFuSZzEdlsr5CEhKRnetL8JLXHZtC7d8M01O5QtTpKxznuCUkHHtSHEa2GjjuG3Pp3TOjon1b8pdYJUXXTOt5MMvv6cubycEJWGCtRHuBvn6iru5afgqt9muMf4qAVoEefHUktqSQckkHG2KcLybg5GdC4sVwNnoFSoa8+od6frtSs11IXIlu2xybf3VKSpJhSkFx6PkfOFpBDjfvSmmxWSsAY4AAe+6PqMObRgvaT/Xv1V9dNA2Ewo92lxUu8y0NR4rS8JCCPm2+YnrVoxYrVpK6266RrRFfs3MW5a0t83Ic/OrO4I6EHIyaGYM+ffbFBisNylLg8rGYqcuJUgeU8uQVZAzgUUWvVioMtIusqJHfUOR4ha2y97uMuJGD9DQ1bJO0Wabi2yuoGQyNud+qdMNNhXELjNrhvoLfOgBtHI4fbPQmvzh5ebTebaXWokSApC1IcYawkNqHVJxt6UHadfjNhLtveaRHVulplf5Y/wCkdvtRLFbjrQ86y00265nxOVIHMfc0kZiLg6xCZyYc0A2O6M5XgstYbUywCdhygJX9/Wsp/iC0siBrRHiOJYRMbLrDyc7KzuFH65+1F8fiVqawui2XbTk5DDLx8FxYKi8M7BKiMfbOaEOI3ESdrychi0R/ATFB5wWPEdBzuSCAQB7A06yyNZxRsgIYmiThu1QtowNzpS7DcnEtS84DSl8rbw7FPoa5uJOm5elLY/c+ZT0Pw18izsptXKcJV2yT37+1EmlLfIZvcUahgszW3POxJQBzD6AYP2GT7UOfim1LMRak6fUpSGnn0qQnGCpKQSSfbpVeGYrUsxJsMLrsdqRy+o53RmJ4dC6iL3izm7HY8tDySL0bcGoF6bElXLGf/KdJ6JB6H7Gm/FVHZiSI8AhRbT5l+p9BSGo70Nfz8G5AcUS/jyk/zJ/2rfQyBuhWOmZfUIr0bb2p9+leOOd1AHh5PTJ3NWmqrU3ay440wGgSENr6lZPUn96FYD0q3XJNxaXhYOSAdyPSr3XdzTco8QAZSvB5fQ967eMqtts10f6SvOhtN6bDcws/ElOHFoSFrUr7ZNct54jWSDbFP2mNcHZqv+SXwlDaT2PlUSf2pQuoWhLjYaWWiryqQM9Kj7shxSXEx1htkbcwwM1nWYTShxfI8uJ7py7EqggNjbb6BXkrU+oYKUyhqC4iY4rmPLJVjB7YzjHtVjAVcp7bV31FKfkZP5QWsgpHtjpv6Vx6N0s/dVqvF1SoQUeZKT/OfQe1FLTXxsnxnkhm3sDyp9hQ9bXQsfkgaNNyPRX01HK9maYmx93RJpiNCtjEfW0C+oYukZw4t8twFLicEHB6hWN8nOav9VcTG/4pbLk2IV1iPoAcjPxcPs565UMg/SltBtUzWOoUw7RFKYaFDmdKfKAPenVe9G2+BpGO4lpkSYZCm1KR86sfLjvmgZK2NpaJBr6KcOHPs4xnT1VTN0k5cpbOodN3ZmFGdBWtuE6Rt28hGOb2qkna017otlEu/QWXITq+RkuLCXXPflGaHZmumrDe3Eo03It0pGQqIXj4Cz646/pQNrzXVx1ZJacuSwt1vZtCE8rbKfRI/wDdHChjmIzgEIcVs0N7EgprXjjPbdQWNVsfirjvuPtcoUnynCwf2qhvTBs2ubbqSLLQG5D6EFvlwcqwk/UHNKNavCeYc6FLoJ/WirWV5cmTbQ00pSUtONK69+YUzGGRQ0skbdj+VR/kHzytc/cEbLRWoZUBNxRbbgy0hl8EsuEABK+xz2NY84v6rmaq1WpUmS3IagJMRh1AGHEpUfPnvn19AKbn4l9bR49og6fhvBy5vMJXIWk7soI6fU/2rOFZjwjhPAi+JeNTtf1+6eeIK/iOEDDtv+lK+2XXGXUutLKFoOUqHUGvipW2WZRlar+mZ5ZBCH+XB9Fe4q/iFh2IHlLU48jIQgH1pXpJSQUkgjcEUVWLVYjRvAlMIS8PkkoG+P6h3+oqE0sjWHILleMhY53mNgmXp+0tQIXx1yPJtlCSqrPTNgkatupkONKjWWOcrJ28QjtXHw6tUjXM9CFyCq3MEF51Ks83tjtmn0uzxm4TUNhtuNEbAHIkY2r51i2K/ByFl/Od+w/a2mH0QqGB1vIP5P8AxBEmG1LSY8Zrw4UfY4GBgUKanktvI+GhgJjNdQf5z7+1FuvtSWq1Q126K+20kDCyNyr2pNz5lxu6y3BQtuMdis9VVLC4JJRxH6Dlf3upYjUMj8rdT2R5pXiw9aCi2QLDEdfJCApKihsHoD3p1W1U6fCTdL/LYUYjXiKZaHK0lWMg7n96QektDvIiCY9lpIHNnoTVXxE1ZOVEFiZuMl1pGy0qdJSPbHSjX08NVNkg+5QTZ5aeLPN9gvqdqGfrvXCpUllCWUZSyhtPyp9z3PvQPdY6mrtJawQUKNMDgk3bWLklcmS0h5a9kKVg/vVJrmKzB1ldHZbrbLBKiFqOAR7etMYKgR1RhAsABZATRGWnEpOpJQmh1TrqFKSSEHOB3rwv19WwrlTgyQoFP9GNxmqyXfltuLFvJQDt4hG/2qjWpS1la1FSickk7k1pWue5tnbJLkaDfmvWdKkzpbsuY+t991RU44s5KjXjUqVIAAWC9JvqVKlSpXq5SpUqVy5d1kvF1sk1My0XCTBkJ/nYcKSfY46j2NGb/GDW0uOGJ9xEgAY5ggNqP/jt+1SpQ01HTzuDpGAkcyNVdHUSxizHED6r90xqK0Trok3lqc8rPMEjlUCfclQpu6Mat2obqG2Y5jR2cFKQkZP1qVKymNfLD8mlgnmGea2bmV58YdaKt0dNogtONcvl59hSMlXyOh4lxt91ecqzgc33zUqUfgUEbaVpA3QmLSOdOQTsqyVe5DrhUyhLIzkdyK4ZcuVMcDkuS6+oDALiyrA9N6lStEGNbsEpLiV4VKlSprxSpUqVy5f/2Q=='
+};
+let DATA = { members: [], months: [], payments: [] };
+let isLoggedIn = false;
+let lastSync = null;
+
+function loadConfig() {
+  try {
+    const s = localStorage.getItem('kwaya_cfg');
+    if (s) CONFIG = Object.assign(CONFIG, JSON.parse(s));
+  } catch(e) {}
+}
+function saveConfigStore() {
+  localStorage.setItem('kwaya_cfg', JSON.stringify(CONFIG));
+}
+
+// Load saint images
+function loadSaintImages() {
+  const ti = document.getElementById('img-theresia');
+  const ji = document.getElementById('img-joseph');
+  if (ti && CONFIG.theresiaSrc) ti.src = CONFIG.theresiaSrc;
+  if (ji && CONFIG.josephSrc)   ji.src = CONFIG.josephSrc;
+}
+
+// ============================================================
+// VIEWS
+// ============================================================
+function showView(v) {
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(x => x.classList.remove('active'));
+  if (v === 'admin-gate') {
+    if (isLoggedIn) {
+      document.getElementById('view-admin').classList.add('active');
+      document.querySelectorAll('.nav-tab')[1].classList.add('active');
+      populateAdminFields();
+      refreshAdminSelects();
+      renderMembersList();
+    } else {
+      document.getElementById('view-admin-gate').classList.add('active');
+      document.querySelectorAll('.nav-tab')[1].classList.add('active');
+    }
+  } else {
+    document.getElementById('view-ripoti').classList.add('active');
+    document.querySelectorAll('.nav-tab')[0].classList.add('active');
+    renderRipoti();
+  }
+}
+
+// ============================================================
+// LOGIN
+// ============================================================
+function doLogin() {
+  const pwd = document.getElementById('pwd-input').value;
+  if (pwd === CONFIG.password) {
+    isLoggedIn = true;
+    document.getElementById('login-error').textContent = '';
+    document.getElementById('pwd-input').value = '';
+    showView('admin-gate');
+  } else {
+    document.getElementById('login-error').textContent = '❌ Nywila si sahihi.';
+  }
+}
+function doLogout() { isLoggedIn = false; showView('admin-gate'); }
+
+// ============================================================
+// CONFIG MANAGEMENT
+// ============================================================
+function populateAdminFields() {
+  document.getElementById('cfg-script-url').value = CONFIG.scriptUrl || '';
+  document.getElementById('cfg-sheet-id').value   = CONFIG.sheetId || '';
+  document.getElementById('cfg-password').value   = '';
+}
+
+function saveConfig() {
+  CONFIG.scriptUrl = document.getElementById('cfg-script-url').value.trim();
+  CONFIG.sheetId   = document.getElementById('cfg-sheet-id').value.trim();
+  const newPwd     = document.getElementById('cfg-password').value;
+  if (newPwd) CONFIG.password = newPwd;
+  saveConfigStore();
+  showMsg('msg-config', '✓ Mipangilio imehifadhiwa', 'ok');
+  updateConfigBanner();
+}
+
+function updateConfigBanner() {
+  const banner = document.getElementById('config-banner');
+  banner.style.display = CONFIG.scriptUrl ? 'none' : '';
+}
+
+async function testConnection() {
+  if (!CONFIG.scriptUrl) { showMsg('msg-config','⚠️ Weka Script URL kwanza','err'); return; }
+  showMsg('msg-config','🔄 Inajaribu...','pending');
+  try {
+    const d = await sheetsGet('getData');
+    DATA = normalizeData(d);
+    lastSync = new Date();
+    showMsg('msg-config','✓ Muunganiko umefanikiwa! Wanakwaya: '+DATA.members.length,'ok');
+    updateSyncBar('admin');
+    renderRipoti();
+    refreshAdminSelects();
+    renderMembersList();
+  } catch(e) {
+    showMsg('msg-config','❌ Imeshindwa: '+e.message,'err');
+  }
+}
+
+// ============================================================
+// GOOGLE SHEETS API
+// ============================================================
+async function sheetsGet(action, params={}) {
+  if (!CONFIG.scriptUrl) throw new Error('Script URL haijawekwa');
+  const url = CONFIG.scriptUrl + '?action=' + action + '&' + new URLSearchParams(params).toString();
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const json = await res.json();
+  if (json.error) throw new Error(json.error);
+  return json;
+}
+
+async function sheetsPost(body) {
+  if (!CONFIG.scriptUrl) throw new Error('Script URL haijawekwa');
+  const res = await fetch(CONFIG.scriptUrl, {
+    method: 'POST',
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const json = await res.json();
+  if (json.error) throw new Error(json.error);
+  return json;
+}
+
+function normalizeData(raw) {
+  const members = (raw.members || []).map(m => ({
+    id: m.id, name: m.name, kiwango: Number(m.kiwango) || 20000, payments: {}
+  }));
+  const months = (raw.months || []).map(m => ({ month: m.month, kiwango: Number(m.kiwango) || 5000 }));
+  const payments = raw.payments || [];
+  payments.forEach(p => {
+    const m = members.find(x => x.id == p.memberId);
+    if (m) m.payments[p.month] = (m.payments[p.month] || 0) + Number(p.amount);
+  });
+  return { members, months, payments };
+}
+
+async function loadFromSheets(forceRefresh=false) {
+  if (!CONFIG.scriptUrl) {
+    // Use local data if configured
+    renderRipoti(); return;
+  }
+  showLoadingState(true);
+  try {
+    const raw = await sheetsGet('getData');
+    DATA = normalizeData(raw);
+    lastSync = new Date();
+    updateSyncBar('ripoti');
+    renderRipoti();
+  } catch(e) {
+    updateSyncBar('ripoti', e.message);
+    renderRipoti();
+  } finally {
+    showLoadingState(false);
+  }
+}
+
+function showLoadingState(show) {
+  document.getElementById('ripoti-loading').style.display = show ? 'block' : 'none';
+  document.getElementById('ripoti-table-wrap').style.display = show ? 'none' : '';
+}
+
+function updateSyncBar(ctx, errMsg) {
+  const el = ctx === 'ripoti'
+    ? document.getElementById('ripoti-sync-bar')
+    : document.getElementById('sync-status-bar');
+  if (!el) return;
+  if (errMsg) {
+    el.innerHTML = `<div class="sync-bar err"><div class="sync-dot"></div> Hitilafu ya muunganiko: ${errMsg}</div>`;
+  } else if (lastSync) {
+    el.innerHTML = `<div class="sync-bar ok"><div class="sync-dot"></div> Imesasishwa: ${lastSync.toLocaleTimeString('sw-TZ')}</div>`;
+  } else {
+    el.innerHTML = '';
+  }
+}
+
+// ============================================================
+// RIPOTI RENDER
+// ============================================================
+function fmt(n) { return n && n !== 0 ? Number(n).toLocaleString('sw-TZ') : ''; }
+function fmtN(n) { return Number(n||0).toLocaleString('sw-TZ'); }
+
+function getMemberTotals(member) {
+  const months = DATA.months;
+  const totalKiwango = months.reduce((s,m) => s + Number(m.kiwango||5000), 0);
+  let totalPaid = 0;
+  months.forEach(m => { totalPaid += (member.payments[m.month] || 0); });
+  return { totalKiwango, totalPaid, deni: totalKiwango - totalPaid };
+}
+
+function renderRipoti() {
+  const months = DATA.months;
+  const members = DATA.members;
+
+  document.getElementById('ripoti-period').textContent = months.length > 0
+    ? `Kipindi: ${months[0].month} – ${months[months.length-1].month} ${new Date().getFullYear()}`
+    : (CONFIG.scriptUrl ? 'Inapakia...' : 'Haijaunganishwa na Google Sheets');
+
+  const search  = (document.getElementById('search-name').value || '').toLowerCase();
+  const statusF = document.getElementById('filter-status').value;
+  let filtered  = members.filter(m => m.name.toLowerCase().includes(search));
+  if (statusF === 'ok')     filtered = filtered.filter(m => getMemberTotals(m).deni === 0);
+  if (statusF === 'deni')   filtered = filtered.filter(m => getMemberTotals(m).deni > 0);
+  if (statusF === 'credit') filtered = filtered.filter(m => getMemberTotals(m).deni < 0);
+
+  let totExp=0, totCol=0, totDeni=0;
+  members.forEach(m => {
+    const t = getMemberTotals(m);
+    totExp  += t.totalKiwango;
+    totCol  += t.totalPaid;
+    totDeni += Math.max(0, t.deni);
+  });
+
+  document.getElementById('summary-cards').innerHTML = `
+    <div class="summary-card"><div class="label">Wanakwaya</div><div class="value">${members.length}</div></div>
+    <div class="summary-card gold-card"><div class="label">Jumla Iliyokusanywa</div><div class="value">Tsh ${fmtN(totCol)}</div></div>
+    <div class="summary-card"><div class="label">Inayotarajiwa</div><div class="value">Tsh ${fmtN(totExp)}</div></div>
+    <div class="summary-card"><div class="label">Jumla ya Madeni</div><div class="value" style="color:var(--danger)">Tsh ${fmtN(totDeni)}</div></div>
+  `;
+
+  document.getElementById('table-header').innerHTML =
+    `<th>#</th><th>Jina</th><th>Kiwango</th>` +
+    months.map(m=>`<th>${m.month}<br><small style="opacity:.6;font-weight:400">${fmtN(m.kiwango)}/=</small></th>`).join('') +
+    `<th>Taslimu</th><th>Deni/Ziada</th><th>Hali</th>`;
+
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+  filtered.forEach((m, i) => {
+    const { totalKiwango, totalPaid, deni } = getMemberTotals(m);
+    let badge = '';
+    if (deni < 0)   badge = `<span class="badge badge-credit">+${fmtN(-deni)} ziada</span>`;
+    else if (deni===0 && totalPaid>0) badge = `<span class="badge badge-ok">✓ Sawa</span>`;
+    else if (totalPaid > 0) badge = `<span class="badge badge-partial">Nusu</span>`;
+    else            badge = `<span class="badge badge-due">Deni</span>`;
+
+    const mCells = months.map(mo => {
+      const paid = m.payments[mo.month] || 0;
+      return `<td class="${paid>0?'paid':'unpaid'}">${paid>0?fmtN(paid):'—'}</td>`;
+    }).join('');
+
+    const deniDisp = deni===0
+      ? '<span style="color:var(--success)">0</span>'
+      : deni<0
+        ? `<span style="color:#1A5CA8">+${fmtN(-deni)}</span>`
+        : `<span style="color:var(--danger)">${fmtN(deni)}</span>`;
+
+    tbody.innerHTML += `<tr>
+      <td style="color:var(--text-muted)">${i+1}</td>
+      <td>${m.name}</td>
+      <td>${fmtN(totalKiwango)}</td>
+      ${mCells}
+      <td class="paid">${fmtN(totalPaid)}</td>
+      <td>${deniDisp}</td>
+      <td>${badge}</td>
+    </tr>`;
+  });
+
+  // Footer
+  const mTotals = months.map(mo => members.reduce((s,m)=>s+(m.payments[mo.month]||0),0));
+  document.getElementById('table-footer').innerHTML =
+    `<td></td><td>Jumla</td><td>${fmtN(totExp)}</td>` +
+    mTotals.map(t=>`<td>${fmtN(t)}</td>`).join('') +
+    `<td>${fmtN(totCol)}</td><td>${fmtN(totDeni)}</td><td></td>`;
+}
+
+// ============================================================
+// ADMIN ACTIONS
+// ============================================================
+function refreshAdminSelects() {
+  document.getElementById('pay-member').innerHTML =
+    DATA.members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+  document.getElementById('pay-month').innerHTML =
+    DATA.months.map(m=>`<option value="${m.month}">${m.month}</option>`).join('');
+}
+
+function renderMembersList() {
+  document.getElementById('members-list').innerHTML =
+    DATA.members.map((m,i)=>`<tr>
+      <td style="color:var(--text-muted)">${i+1}</td>
+      <td style="text-align:left;padding-left:0.9rem">${m.name}</td>
+      <td>Tsh ${fmtN(m.kiwango)}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteMember(${m.id})">Futa</button></td>
+    </tr>`).join('');
+}
+
+async function addMember() {
+  const name    = document.getElementById('new-name').value.trim();
+  const kiwango = parseInt(document.getElementById('new-kiwango').value) || 20000;
+  if (!name) { showMsg('msg-addmember','Weka jina la mwanakwaya','err'); return; }
+  if (DATA.members.find(m=>m.name.toLowerCase()===name.toLowerCase())) {
+    showMsg('msg-addmember','Jina hili lipo tayari','err'); return;
+  }
+  showMsg('msg-addmember','Inahifadhi...','pending');
+  try {
+    if (CONFIG.scriptUrl) {
+      await sheetsPost({action:'addMember', name, kiwango});
+      await loadFromSheets();
+    } else {
+      const newId = DATA.members.length ? Math.max(...DATA.members.map(m=>m.id))+1 : 1;
+      DATA.members.push({id:newId, name, kiwango, payments:{}});
+    }
+    document.getElementById('new-name').value = '';
+    showMsg('msg-addmember',`✓ ${name} ameongezwa`,'ok');
+    refreshAdminSelects(); renderMembersList(); renderRipoti();
+  } catch(e) { showMsg('msg-addmember','❌ '+e.message,'err'); }
+}
+
+async function addMonth() {
+  const month   = document.getElementById('new-month').value.trim();
+  const kiwango = parseInt(document.getElementById('new-month-kiwango').value) || 5000;
+  if (!month) { showMsg('msg-addmonth','Weka jina la mwezi','err'); return; }
+  if (DATA.months.find(m=>m.month===month)) { showMsg('msg-addmonth','Mwezi upo tayari','err'); return; }
+  showMsg('msg-addmonth','Inahifadhi...','pending');
+  try {
+    if (CONFIG.scriptUrl) {
+      await sheetsPost({action:'addMonth', month, kiwango});
+      await loadFromSheets();
+    } else {
+      DATA.months.push({month, kiwango});
+    }
+    document.getElementById('new-month').value = '';
+    showMsg('msg-addmonth',`✓ Mwezi "${month}" umeongezwa`,'ok');
+    refreshAdminSelects(); renderRipoti();
+  } catch(e) { showMsg('msg-addmonth','❌ '+e.message,'err'); }
+}
+
+async function recordPayment() {
+  const memberId = document.getElementById('pay-member').value;
+  const month    = document.getElementById('pay-month').value;
+  const amount   = parseInt(document.getElementById('pay-amount').value);
+  if (!amount || amount<=0) { showMsg('msg-payment','Weka kiasi sahihi','err'); return; }
+  const member = DATA.members.find(m=>m.id==memberId);
+  showMsg('msg-payment','Inahifadhi...','pending');
+  try {
+    if (CONFIG.scriptUrl) {
+      await sheetsPost({action:'addPayment', memberId, month, amount});
+      await loadFromSheets();
+    } else {
+      if (member) member.payments[month] = (member.payments[month]||0) + amount;
+    }
+    document.getElementById('pay-amount').value = '';
+    showMsg('msg-payment',`✓ Tsh ${fmtN(amount)} imehifadhiwa kwa ${member?.name||''} (${month})`,'ok');
+    renderMembersList(); renderRipoti();
+  } catch(e) { showMsg('msg-payment','❌ '+e.message,'err'); }
+}
+
+async function deleteMember(id) {
+  if (!confirm('Una uhakika unataka kumfuta mwanakwaya huyu?')) return;
+  try {
+    if (CONFIG.scriptUrl) {
+      await sheetsPost({action:'deleteMember', id});
+      await loadFromSheets();
+    } else {
+      DATA.members = DATA.members.filter(m=>m.id!==id);
+    }
+    renderMembersList(); refreshAdminSelects(); renderRipoti();
+  } catch(e) { alert('Hitilafu: '+e.message); }
+}
+
+function showMsg(id, txt, type) {
+  const el = document.getElementById(id);
+  el.textContent = txt;
+  el.className = 'msg' + (type==='ok'?' msg-ok':type==='err'?' msg-err':type==='pending'?' msg-ok':'');
+  if (type!=='pending') setTimeout(()=>{el.textContent='';el.className='msg';},4500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadConfig();
+loadSaintImages();
+updateConfigBanner();
+if (CONFIG.scriptUrl) {
+  loadFromSheets();
+} else {
+  renderRipoti();
+}
+</script>
+</body>
+</html>
